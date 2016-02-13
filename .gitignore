@@ -1,0 +1,7 @@
+.Rproj.user
+.Rhistory
+.RData
+
+Resources/*
+rsconnet/*
+upload_to_shiny_server.r
