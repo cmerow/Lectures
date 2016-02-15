@@ -18,7 +18,7 @@ ioslides_presentation
 
 
 
-```{r, echo=FALSE}
+```{r echo=FALSE}
 library(vegan)
 data(BCI)
 
@@ -460,6 +460,12 @@ renderPlot({
 })
 
 ```
+
+  <div class="notes">
+ 
+  -
+ 
+  </div>
 <!-- ---------------------------------------------------------------------------------- --> 
 ## Comparing __Richness__ | Rarefaction Curves {.smaller}
   Which of the 50 1 ha plots is most diverse, once you control for the number of individuals?  
