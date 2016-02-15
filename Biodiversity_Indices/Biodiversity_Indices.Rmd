@@ -1,5 +1,5 @@
 ---
-title: "Indices of Biodiversity"
+title: "Measuring Biodiversity"
 author: "Cory Merow"
 date: "January 21, 2016"
 output: ioslides_presentation
@@ -11,26 +11,46 @@ ioslides_presentation
 - include my notes in the presentation
 - include my code 
 - include extentions to outher resources
-
+- can you include audio clips for watching at home?
+- how to include feedback from students to questions?
+- can translate directly in to code chunks
 -->
+
+
+
+```{r, echo=FALSE}
+library(vegan)
+data(BCI)
+
+```
 
 ## This Presentation {.smaller}
 
-(very cool) interactive slides available at [cmerow.shinyapps.io/Biodiversity](https://cmerow.shinyapps.io/Biodiversity)
+(very cool) interactive slides available at
 
-  - Control + o gives overview of slides (on macs, sometimes on PCs)
-  - Control + p shows notes associated with each slide (on macs)
-  - Toggle buttons to interact with the slides
+[http://protea.eeb.uconn.edu:3838/cory/Biodiversity_Indices/](http://protea.eeb.uconn.edu:3838/cory/Biodiversity_Indices/)
+
+[cmerow.shinyapps.io/Biodiversity](https://cmerow.shinyapps.io/Biodiversity)
+
+  - open in chrome, if you have it
+  - p shows notes associated with each slide (on macs)
 
 (moderately cool) static slides available from your course website
 
-  ```{r echo = FALSE}
+ <div class="notes">
+ 
+  - These will help both of us remember what I meant to say on each slide
+  - o gives overview of slides (on macs, sometimes on PCs)
+  - w allows widescreen
+  - f allows fullscreen
+  
+ </div>
+
+```{r echo = FALSE}
 inputPanel(
   sliderInput("nreps", label = "Number of replicate samples", min = 2, max = 100, value = 3)
 )
-```
 
-```{r echo = FALSE}
 renderPlot({
   spa <- specaccum(BCI,method='random')
   par(mar=c(20,12,3,20))
@@ -40,11 +60,7 @@ renderPlot({
 })
 ```
 
-```{r, echo=FALSE}
-library(vegan)
-data(BCI)
 
-```
 
 ```{r, echo=FALSE,eval=FALSE}
 H <- diversity(BCI)
@@ -101,23 +117,14 @@ for (i in x){	#tells R to give i each value in the object x
 }
 plot(x, a)		#plot the data
 
-x<-2:50	#makes a sequence of numbers 1:50 that represent the hectares
-a<-data.frame(matrix(NA,49,9))	#sets up an empty object we’ll fill with results
-
-for (i in x){	#tells R to give i each value in the object x
-  #b<- apply(BCI[1:i,], 2, sum)	#get the sum of i hectares.
-  a[i-1,]=specpool(BCI[1:i,]) #work the fisher’s alpha magic on it
-}
-plot(x, a[,2],type='l',xlab='number of samples',ylab='# species',las=1,bty='n',col='steelblue3',lwd=3)		#plot the data
-lines(x,a[,1],col='red3',lwd=3)
-lines(x,a[,2]+a[,3],col='steelblue3',lty=2)
-lines(x,a[,2]-a[,3],col='steelblue3',lty=2)
-legend('bottomright',legend=c('observed','chao2 estimation'),col=c('red3','steelblue3'),lwd=3,bty='n')
-#Chao	S_P = S_0 + a1^2/(2*a2) * (N-1)/N
 ```
 
 <!-- ---------------------------------------------------------------------------------- -->
 ## Main Points
+
+__Biodiversity__
+
+The sum total of taxonomic, genetic, functional, phylogenetic, and ecological diversity found in an area (habitat, region, continent, or the biosphere).
 
 > 1. Quantifying biodiversity is difficult (Data collection and modeling)
 > 2. Diversity = Richness +(*) Evenness
@@ -125,30 +132,31 @@ legend('bottomright',legend=c('observed','chao2 estimation'),col=c('red3','steel
 > 4. How to compare diversity between communities
 > 5. Species aren't the only units of diversity
 
+ <div class="notes">
+ 
+ </div>
 <!-- ---------------------------------------------------------------------------------- -->
 ## Why measure diversity?  
 
-  > - Diversity => ecosystem health
+  - Diversity => ecosystem health
     + increased stability
     + increased productivity
     + resistance to invasion and other disturbances
   
-  > - A baseline for detecting change
+  - A baseline for detecting change
 
   <div class="notes">
-    Diverse habitats with a variety of plants can have benefits such as: 
-    - Providing forage for a variety of insect and vertebrate species. 
-    - Stability resulting from plants in the community that are able to survive drought, insect plagues, and/or disease outbreaks so that the site will have some soil protection/forage/etc. in those years.
-    - Plants containing a variety of genetic material that may be useful in long term survival and stability of the community.
-    - The community benefits from a mixture of plants:
-      + soils improve with nitrogen fixers, deep rooted plants bring nutrients up from soil layers below other plants roots. 
-      + some species work together so that both can survive (called commensalism) and therefore, diverse communities can be more stable.
-    - Healthy diverse plant communities generally have all niches filled and are theoretically less likely to be invaded by noxious or opportunistic introduced species.
+  
+  Diverse habitats with a variety of plants can have benefits such as: 
+  
+  - forage for other species
+  - Stability resulting from species able to survive disturbance
+  - variety of genetic material useful in long term survival and stability
+  - The community benefits from a mixture of plants:
+    + soils improve with nitrogen fixers, deep rooted plants bring nutrients up from soil layers 
+    + some species work together (called commensalism) 
+  - Healthy diverse plant communities generally have all niches filled and are theoretically less likely to be invaded
 
-  Though seldom acknowledged, there are also disadvantages to high biodiversity:
-    - Diverse communities are often a sign of fragmented or somewhat degraded sites where much of species richness is contributed by disturbance species.
-    - Plant communities with high diversity can be more difficult to manage for grazing because different species of plants have different grazing tolerances and different rates of phenological development.
-    - Many plant communities are very stable with few species that are well adapted to the environment.
   </div>
 <!-- ---------------------------------------------------------------------------------- -->
 ## Diversity = Richness +(*) Evenness
@@ -159,15 +167,19 @@ Richness
   > -  Elephant, rhino and lion is less diverse than 
   > -  Elephant, rhino, lion, leopard and buffalo
 
-Evenness
+Evenness 
  
   > -  = how __different abundances__ are among species
+  > -  measured with a large variety of indices (Shannon, Simpson, etc.)
   > -  maximum evenness = all species have the same # individuals
   > -  minimum evenness = all individuals are the same species
   > -  1000 elephants and 1 lion is less diverse than
   > -  500 elephants and 500 lions
 
   <div class="notes">
+  
+  - Richness: numbers of species (or other fundamental units) present in a particular area.
+  - Biodiversity indices: relative proportional  representation of species (or other fundamental units of biodiversity) in a particular area or sample. 
   
   </div>
 
@@ -182,6 +194,10 @@ head(BCI,5)[,1:6]
 <IMG STYLE="position:absolute; TOP:25px; LEFT:600px; WIDTH:200px; HEIGHT:200px" SRC="Figures/BCI_trees.png">
 
   <div class="notes">
+  
+  - columns are species (225)
+  - rows are 1 hectare plots (50)
+  - you're just looking at the beginning of the data table
   
   </div>  
   
@@ -199,12 +215,12 @@ Definition of sampling: some members of a population are selected as representat
 
 
   <div class="notes">
-  What are the important attributes of these data? 
   
-  Why do we use samples ?
-  - Get information from large populations minimal cost/ maximum speed
-
-  - better to have lots of small plots than 1 big plot to achieve replication
+  - Because we have often have a sample (not the entire population) we need to use stats to infer things about the population
+  - replication gives insight into how well our sample represents the population  
+  - Why do we use samples ?
+    + Get information from large populations minimal cost/ maximum speed
+    + better to have lots of small plots than 1 big plot to achieve replication
   
   </div>
   
@@ -214,7 +230,7 @@ Definition of sampling: some members of a population are selected as representat
   
 ```{r echo = FALSE}
 inputPanel(
-  sliderInput("nreps", label = "Number of replicate samples", min = 2, max = 100, value = 3)
+  sliderInput("nreps2", label = "Number of replicate samples", min = 2, max = 30, value = 3)
 )
 ```
 
@@ -223,22 +239,33 @@ renderPlot({
   spa <- specaccum(BCI,method='random')
   par(mar=c(8,4,3,7))
   plot(spa$sites,spa$perm[,1],xlab='# sites',ylab='# species', main='species accumulation curves',type='l',las=1,bty='n',ylim=c(80,230))
-  for (i in seq_len(NCOL(spa$perm[,1:input$nreps]))){
+  for (i in seq_len(NCOL(spa$perm[,1:input$nreps2]))){
     lines(spa$sites, spa$perm[,i])}
 })
 ```
 
+  <div class="notes">
+  
+  - the number of species asymptotes as we add more sampling plots, suggesting that we're getting close to the total number of species
+  - 'species accumulation curve'
+  
+  
+  </div>
+
 <!-- ---------------------------------------------------------------------------------- --> 
-## Parametric methods to estimate richness {.smaller} 
+## Parametric estimates of richness {.smaller} 
  We can build models for the shape of this curve and predict total richness
     
     - Lomolino (red)
     - Arrhenius (blue)
  
   <div class="notes">
-    - which model produces the best fit?
-    - which model predicts more species in 100 ha?
-    - Pros and Cons
+  
+  - which model produces the best fit?
+  - which model predicts more species in 100 ha?
+  - 'parametric' means that we chose a specific shape for the function (e.g. Lomolino)
+  - Pros and Cons
+  
   </div>
 
 
@@ -247,9 +274,7 @@ inputPanel(
   selectInput("sp.ac.mod", label = "Model",choices = c('none','Lomolino','Arrhenius'), selected = 'none'),
   sliderInput("nsites1", label = "Number of 1 ha plots", min = 50, max = 100, value = 50)
 )
-```
-    
-```{r,echo=FALSE}
+
 renderPlot({
   spa <- specaccum(BCI)
   par(mar=c(13,4,3,10))
@@ -275,7 +300,7 @@ renderPlot({
 ```  
 
 <!-- ---------------------------------------------------------------------------------- -->
-## Nonparametric methods to estimate richness
+## Nonparametric estimates of richness
 
 ```{r echo = FALSE}
 inputPanel(
@@ -288,7 +313,7 @@ inputPanel(
 ```{r echo = FALSE}
 
 renderPlot({
-  par(mar=c(5,4,2,7))
+  par(mar=c(12,4,2,7))
   ins=as.numeric(input$nsites)
   a<-data.frame(matrix(NA,ins-1,9))	
   for (i in 2:ins){	#tells R to give i each value in the object x
@@ -306,7 +331,7 @@ renderPlot({
 
   <div class="notes">
   
-  Species accumulation models indicate that not all species were seen in any site. These unseen species also belong to the species pool.
+  - Species accumulation models indicate that not all species were seen in any site. These unseen species also belong to the species pool.
   
   could add other metrics 1to the plot...
   
@@ -318,37 +343,53 @@ renderPlot({
   - return to sampling concepts
   - cuttable - see if theres a quick way to calculate somethign...
 -->
+ 
 <!-- ---------------------------------------------------------------------------------- -->
 ## Range Modeling
-User = Password = RWUstudent          
-[bien3.org](https://bien3.org) 
-<iframe src="https://bien3.org" height=600 width=800></iframe>
 
-<!-- ---------------------------------------------------------------------------------- -->
-## New World Plants
-<IMG STYLE="position:absolute; TOP:200px; LEFT:0px; WIDTH:900px; HEIGHT:490px" SRC="Figures/Bien3org.png">
-
-  <div class="notes">
-       Slide include just in case you don't have internet for the previous slide
-  </div>   
-  
-<!-- ---------------------------------------------------------------------------------- -->
-## Range Modeling
 - Occurrences from Herbaria, museums, people we know 
 - Correlate occurrence with climate 
 - Predict Range 
 - Stack Ranges
-  
+
+<IMG STYLE="position:absolute; TOP:300px; LEFT:250px; WIDTH:600px; HEIGHT:360px" SRC="Figures/SDM_workflow.png">
   <div class="notes">
-    - these are the ingredients of estimating richness from range models
-    - these avoid direct surveys of diversity and try to interpolate where species occur
+  
+  - these are the ingredients of estimating richness from range models
+  - these avoid direct surveys of diversity and try to interpolate where species occur
+  
+  </div>  
+
+<!-- ---------------------------------------------------------------------------------- -->
+## Range Modeling
+
+User = Password = RWUstudent          
+[bien3.org](https://bien3.org) 
+<iframe src="https://bien3.org" height=600 width=800></iframe>
+
+  <div class="notes">
+  
+  - rather than sampling species directly, a more recent approach is to build models of species ranges to infer where they are ('range model'='niche model'='distribution model')
+  
+  </div>
+<!-- ---------------------------------------------------------------------------------- -->
+## New World Plants
+
+<IMG STYLE="position:absolute; TOP:200px; LEFT:0px; WIDTH:900px; HEIGHT:490px" SRC="Figures/Bien3org.png">
+
+  <div class="notes">
+  
+  Slide include just in case you don't have internet for the previous slide
+  
   </div>  
   
 <!-- ---------------------------------------------------------------------------------- -->
 ## New World Plants
+
 <iframe src="https://bien3.org/richness" height=600 width=800></iframe>
 
----
+## New World Plants
+
 <IMG STYLE="position:absolute; TOP:5px; LEFT:120px; WIDTH:350px; HEIGHT:350px" SRC="Figures/bien3richness1.png">
 
 <IMG STYLE="position:absolute; TOP:5px; LEFT:470px; WIDTH:350px; HEIGHT:350px" SRC="Figures/bien3richness2.png">
@@ -358,7 +399,9 @@ User = Password = RWUstudent
 <IMG STYLE="position:absolute; TOP:355px; LEFT:470px; WIDTH:350px; HEIGHT:350px" SRC="Figures/bien3richness4.png">
 
   <div class="notes">
-     Slide include just in case you don't have internet for the previous slide
+    
+  -Slide include just in case you don't have internet for the previous slide
+  
   </div>
 
 <!-- ---------------------------------------------------------------------------------- -->
@@ -385,6 +428,8 @@ User = Password = RWUstudent
   - Species accumulation curves can estimate richness from samples from 1 community
   - Rarefaction curves compare samples of __different__ communities
   - Samples usually have different numbers of __individuals__
+    + plot 1 has 50 species and 700 individuals
+    + plot 2 has 30 species and 300 indiviudals
   - Species richness increases with sample size, and differences in richness actually may be caused by differences in sample size.
   - This is very similar to the species accumulation curve above, but the x-axis is now __individuals__
   
@@ -394,7 +439,7 @@ User = Password = RWUstudent
   
   - Some BCI sites are younger than others and have more individuals than others, making samples difficult to compare. Hence we need to rarefy the samples (if we assume they might represent different communities).
   
-  - Another simple measure of species diversity is simply the number of species, or species richness.  Again, this gives you a number, but how would you compare two plots that varied in the number of individuals that they have?  rarefaction simply means taking a random sample of a smaller, standard size from the plot to compare with other plots that have the same number of individuals.  So, for example, we’d express our result as 'diversity per 50 individuals.'
+  - Richness gives you a number, but how would you compare two plots that varied in the number of individuals that they have?  rarefaction simply means taking a random sample of a smaller, standard size from the plot to compare with other plots that have the same number of individuals. So, for example, we’d express our result as 'diversity per 50 individuals.'
   
   </div>
 
@@ -406,11 +451,12 @@ User = Password = RWUstudent
 ```{r,echo=FALSE}
 inputPanel(
   sliderInput("nplots3", label = "Select which plots to compare", min = 1, max = 50, value = c(1:5)),
+  numericInput('nindiv3',label='Select how many individuals to control for', value=200, min =2, max=450),
   helpText('Numbers in the figure refer to different plots')
 )
 renderPlot({
   par(mar=c(15,4,3,1))
-  rarecurve(BCI[input$nplots3[1]:input$nplots3[2],], step = 1, sample=50, main='Rarefaction curves to compare 1 ha plots',bty='n',las=1)
+  rarecurve(BCI[input$nplots3[1]:input$nplots3[2],], step = 1, sample=input$nindiv3, main='Rarefaction curves to compare 1 ha plots',bty='n',las=1)
 })
 
 ```
@@ -455,11 +501,6 @@ renderPlot({
 <!-- ---------------------------------------------------------------------------------- --> 
 ## Beyond Richness | Why do we need diversity indices?
 An alternative to rarefaction that accounts for differences is abundance between plots
-
-How to compare sites with different numbers of individuals?
-    
-  - At site 1, I detected 52 species, and 700 individuals
-  - At site 2, I detected 25 species and 200 individuals
 
 How to compare sites with different abundance patterns?
 
@@ -509,9 +550,10 @@ $D_S=1/\sum{p_{i}^{2}}$
 $H=-\sum_{i=1}^S p_i \log_b  p_i$
 
   <div class="notes">
-   - slide bars of individual's abundance
+  
+  - slide bars of individual's abundance
   - Have D and H both calculated
-      - Try to find some wierd behavior where they do different things
+  - Try to find some wierd behavior where they do different things
 
   </div>
 
@@ -534,6 +576,14 @@ $H=-\sum_{i=1}^S p_i \log_b  p_i$
 
 <!-- ---------------------------------------------------------------------------------- -->
 ## Beta Diversity
+
+```{r echo=FALSE} 
+beta <- vegdist(BCI, binary=TRUE)
+mean(beta)
+
+betadiver(help=TRUE)
+z <- betadiver(BCI, "z")
+```
 
   <div class="notes">
 
