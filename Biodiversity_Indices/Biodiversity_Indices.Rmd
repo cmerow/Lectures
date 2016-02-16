@@ -134,6 +134,7 @@ The sum total of taxonomic, genetic, functional, phylogenetic, and ecological di
 
  <div class="notes">
  
+ 
  </div>
 <!-- ---------------------------------------------------------------------------------- -->
 ## Why measure diversity?  
@@ -181,7 +182,7 @@ Evenness
   
   - Richness: numbers of species (or other fundamental units) present in a particular area.
   - Biodiversity indices: relative proportional  representation of species (or other fundamental units of biodiversity) in a particular area or sample. 
-  
+  - the nature of biodiversity measurement is that there are __loads__ of metrics for a range of comparisons. I'm going to show you 1 example of each common comparision. If you're in a position to conduct a biodiversity assessment, then it's time to look up the pros and cons of different metrics for a particular task.
   </div>
 
 <!-- ---------------------------------------------------------------------------------- -->
@@ -378,7 +379,7 @@ renderPlot({
 - Predict Range 
 - Stack Ranges
 
-<IMG STYLE="position:absolute; TOP:300px; LEFT:250px; WIDTH:600px; HEIGHT:360px" SRC="Figures/SDM_workflow.png">
+<IMG STYLE="position:absolute; TOP:300px; LEFT:350px; WIDTH:600px; HEIGHT:360px" SRC="Figures/SDM_workflow.png">
 
   <div class="notes">
   
@@ -390,9 +391,8 @@ renderPlot({
 <!-- ---------------------------------------------------------------------------------- -->
 ## Range Modeling
 
-User = Password = RWUstudent          
-[bien3.org](https://bien3.org) 
-<iframe src="https://bien3.org" height=600 width=800></iframe>
+[bien3.org](https://bien3.org)     User = Password = RWUstudent 
+<iframe src="https://bien3.org" height=570 width=780></iframe>
 
   <div class="notes">
   
@@ -415,7 +415,7 @@ User = Password = RWUstudent
 
 <iframe src="https://bien3.org/richness" height=600 width=800></iframe>
 
-## New World Plants
+##        New World Plants
 
 <IMG STYLE="position:absolute; TOP:5px; LEFT:120px; WIDTH:350px; HEIGHT:350px" SRC="Figures/bien3richness1.png">
 
@@ -458,7 +458,6 @@ User = Password = RWUstudent
     + plot 1 has 50 species and 700 individuals
     + plot 2 has 30 species and 300 indiviudals
   - Species richness increases with sample size, and differences in richness actually may be caused by differences in sample size.
-  - This is very similar to the species accumulation curve above, but the x-axis is now __individuals__
   
   <div class="notes">
   
@@ -472,6 +471,8 @@ User = Password = RWUstudent
 
 <!-- ---------------------------------------------------------------------------------- --> 
 ## Comparing __Richness__ | Rarefaction Curves {.smaller}
+
+This is very similar to the species accumulation curve above, but the x-axis is now __individuals__
 
 Which of the 50 1 ha plots is most diverse, once you control for the number of individuals?
 
@@ -489,7 +490,7 @@ inputPanel(
   helpText('Numbers in the figure refer to different plots')
 )
 renderPlot({
-  par(mar=c(15,4,3,1))
+  par(mar=c(15,4,3,15))
   rarecurve(BCI[input$nplots3[1]:input$nplots3[2],], step = 1, sample=input$nindiv3, main='Rarefaction curves to compare 1 ha plots',bty='n',las=1)
 })
 
@@ -519,7 +520,7 @@ renderTable({
 ```
  
 <!-- ---------------------------------------------------------------------------------- --> 
-## Beyond Richness: Evenness {.smaller}
+## Beyond Richness: Evenness {.smaller .columns-2}
 
 Why do we need diversity indices?
 
@@ -527,7 +528,7 @@ Why do we need diversity indices?
 
   - The number of individuals of each species are plotted in order of their relative abundance in the community (most abundant to least abundant).
 
-<IMG STYLE="position:absolute; TOP:350px; LEFT:240px; WIDTH:270px; HEIGHT:300px" SRC="Figures/RAD.png">
+<IMG STYLE="position:absolute; TOP:270px; LEFT:240px; WIDTH:360px; HEIGHT:390px" SRC="Figures/RAD.png">
 
   <div class="notes">
   
@@ -576,7 +577,7 @@ The graph shows the relative abundance of species found in 4 sample communities.
     + weight abundance vs richness differently
     + weight rare or abundant species differently
 
-<IMG STYLE="position:absolute; TOP:50px; LEFT:700px; WIDTH:100px; HEIGHT:110px" SRC="Figures/RAD.png">
+<IMG STYLE="position:absolute; TOP:30px; LEFT:700px; WIDTH:100px; HEIGHT:110px" SRC="Figures/RAD.png">
 
 <IMG STYLE="position:absolute; TOP:370px; LEFT:100px; WIDTH:500px; HEIGHT:300px" SRC="Figures/Div_Indices.png">
   
@@ -632,7 +633,7 @@ renderPlot({
 ```
 
   <div class="notes">
-  
+  - Go to plots 33-40. What aspect of diversity does H reward?
   - 1/D = Inverse Simpson
   - alpha = Fisher's alpha
   - I show these two metrics of diversity to compare with H because they're common, even though we won't get to them today
@@ -871,11 +872,38 @@ Diversity is hierarchical: 5 species from 5 different families represent more ge
     + Functional diversity?
     + Phylogenetic Diversity
 
+
+  <div class="notes">
+  - Appropriateness of each index for your data
+  - Discriminant ability of the index
+  - Statistical Comparability
+  - Widespread utility of the index
+  - Your Question
+    + ecosystem function is better described by dominant species or functional diversity
+    + conservation might focus on rarity, richness
+    + managing a population might focus on genetic diversity and abundance
+    + natural resources might focus on phylogentic diversity or dominance
+    
+  </div> 
+<!-- ---------------------------------------------------------------------------------- -->
+## Some examples of choosing an index
+
+  - ecosystem function: dominant species or functional diversity
+  - conservation: rarity and richness
+  - population viability: genetic diversity and abundance
+  - natural resources: phylogentic diversity or dominance
+  
+  <div class="notes">
+  
+  - these are just suggestions; there are many applications of each that use other indices
+  
+  </div> 
 <!-- ---------------------------------------------------------------------------------- -->
 ## Some things that would've been nice to get to
 
 - uncertainty in diversity indices
 - detection probability
+
 
   <div class="notes">
   
