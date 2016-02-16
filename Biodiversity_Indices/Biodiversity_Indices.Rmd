@@ -28,7 +28,7 @@ data(BCI)
 
 (very cool) interactive slides available at
 
-[http://protea.eeb.uconn.edu:3838/cory/Biodiversity_Indices/](http://protea.eeb.uconn.edu:3838/cory/Biodiversity_Indices/)
+[http://protea.eeb.uconn.edu:3838/cory/Biodiversity_Indices/](http://protea.eeb.uconn.edu:3838/cory/Biodiversity_Indices/) or 
 
 [cmerow.shinyapps.io/Biodiversity](https://cmerow.shinyapps.io/Biodiversity)
 
@@ -127,7 +127,7 @@ __Biodiversity__
 The sum total of taxonomic, genetic, functional, phylogenetic, and ecological diversity found in an area (habitat, region, continent, or the biosphere).
 
 > 1. Quantifying biodiversity is difficult (Data collection and modeling)
-> 2. Diversity = Richness +(*) Evenness
+> 2. Diversity = Richness & Evenness
 > 3. Estimate unobserved species? Really?
 > 4. How to compare diversity between communities
 > 5. Species aren't the only units of diversity
@@ -138,11 +138,12 @@ The sum total of taxonomic, genetic, functional, phylogenetic, and ecological di
 <!-- ---------------------------------------------------------------------------------- -->
 ## Why measure diversity?  
 
-  - Diversity => ecosystem health
-    + increased stability
-    + increased productivity
-    + resistance to invasion and other disturbances
-  
+  - Higher Diversity => ecosystem health
+    + increased stability;  i.e. biotic components are less likely to go extinct; increased redundancy of biotic components. 
+    + Increased resilience of the system (i.e. increased capacity of the ecosystem to respond to environmental change or disturbance by resisting damage and recovering quickly).
+    + increased productivity => potential for human use
+    + increased evolutionary potential. 
+ 
   - A baseline for detecting change
 
   <div class="notes">
@@ -159,7 +160,7 @@ The sum total of taxonomic, genetic, functional, phylogenetic, and ecological di
 
   </div>
 <!-- ---------------------------------------------------------------------------------- -->
-## Diversity = Richness +(*) Evenness
+## Diversity = Richness & Evenness {.smaller}
 
 Richness
  
@@ -211,8 +212,9 @@ Definition of sampling: some members of a population are selected as representat
   > - can count species (not covered today)
   > - empirical sample 
 
+<!--
 <IMG STYLE="position:absolute; TOP:400px; LEFT:350px; WIDTH:350px; HEIGHT:240px" SRC="Figures/Sampling.png">
-
+-->
 
   <div class="notes">
   
@@ -245,7 +247,7 @@ renderPlot({
 ```
 
   <div class="notes">
-  
+  - increaseing the number of replicates shows how each is unique, but a pattern emerges
   - the number of species asymptotes as we add more sampling plots, suggesting that we're getting close to the total number of species
   - 'species accumulation curve'
   
@@ -300,20 +302,52 @@ renderPlot({
 ```  
 
 <!-- ---------------------------------------------------------------------------------- -->
-## Nonparametric estimates of richness
+## Parametric estimates of richness {.smaller} 
 
+<IMG STYLE="position:absolute; TOP:100px; LEFT:100px; WIDTH:660px; HEIGHT:500px" SRC="Figures/extrapolating.png">
+
+  <div class="notes">
+  
+  - without an understanding of what process you're extrapolating, it can be dangerous
+  - its my __opinion__ that there's no particular reason that the the number of species located anywhere should follow a particular pattern. I suspect its rather based on a lot of historical contingencies of evolution.
+  
+  </div>
+
+
+<!-- ---------------------------------------------------------------------------------- -->
+## Nonparametric estimates of richness {.smaller .columns-2}
+ 
+Another class of estimators is based on the properties of the rare species
+
+Based on code-breaking methods from WWII; The total number of characters is related to the number of rare characters
+
+$Chao_1 S_P = S_0 + \frac{a_1^2}{2*a_2} * (N-1)/N$
+
+- $S_0$ = observed # Species
+- $a_1$ = observed singletons
+- $a_2$ = observed doubletons
+- $N$ = total individuals
+
+  <div class="notes">
+  
+  - Species accumulation models indicate that not all species were seen in any site. These unseen species also belong to the species pool.
+  
+  - non parametric because they don't depend on partucular species abundance distribution (defined in a few slides)
+  
+  - For $Chao_1$ no further changes after there are 2 of each species
+  Pros and cons
+  
+  </div>
+  
 ```{r echo = FALSE}
 inputPanel(
   #selectInput("nsites", label = "Number of sites",
   #             choices = seq(2,50,by=2), selected = 20)
-  sliderInput("nsites", label = "Number of sites", min = 2, max = 50, value = 20)
+  sliderInput("nsites", label = "Number of sites", min = 2, max = 50, value = 5)
 )
-```
-
-```{r echo = FALSE}
 
 renderPlot({
-  par(mar=c(12,4,2,7))
+  par(mar=c(10,4,2,0))
   ins=as.numeric(input$nsites)
   a<-data.frame(matrix(NA,ins-1,9))	
   for (i in 2:ins){	#tells R to give i each value in the object x
@@ -324,19 +358,11 @@ renderPlot({
   lines(2:ins,a[,1],col='red3',lwd=3)
   lines(2:ins,a[,2]+a[,3],col='steelblue3',lty=2)
   lines(2:ins,a[,2]-a[,3],col='steelblue3',lty=2)
-  legend('bottomright',legend=c('observed','chao2 estimation'),col=c('red3','steelblue3'),lwd=3,bty='n')
+  legend('bottomright',legend=c('observed','chao1 estimation'),col=c('red3','steelblue3'),lwd=3,bty='n')
 })
 #Chao	S_P = S_0 + a1^2/(2*a2) * (N-1)/N
 ```
 
-  <div class="notes">
-  
-  - Species accumulation models indicate that not all species were seen in any site. These unseen species also belong to the species pool.
-  
-  could add other metrics 1to the plot...
-  
-  Pros and cons
-  </div>
 
 <!-- ---------------------------------------------------------------------------------- -->
 <!-- ## Stopping Rules
@@ -353,6 +379,7 @@ renderPlot({
 - Stack Ranges
 
 <IMG STYLE="position:absolute; TOP:300px; LEFT:250px; WIDTH:600px; HEIGHT:360px" SRC="Figures/SDM_workflow.png">
+
   <div class="notes">
   
   - these are the ingredients of estimating richness from range models
@@ -445,10 +472,17 @@ User = Password = RWUstudent
 
 <!-- ---------------------------------------------------------------------------------- --> 
 ## Comparing __Richness__ | Rarefaction Curves {.smaller}
-  
-  - Which of the 50 1 ha plots is most diverse, once you control for the number of individuals?
 
-```{r,echo=FALSE}
+Which of the 50 1 ha plots is most diverse, once you control for the number of individuals?
+
+
+  <div class="notes">
+ 
+  -
+ 
+  </div>
+  
+```{r echo=FALSE}
 inputPanel(
   sliderInput("nplots3", label = "Select which plots to compare", min = 1, max = 50, value = c(1:5)),
   numericInput('nindiv3',label='Select how many individuals to control for', value=200, min =2, max=450),
@@ -461,128 +495,251 @@ renderPlot({
 
 ```
 
+<!-- ---------------------------------------------------------------------------------- --> 
+## Comparing __Richness__ | Rarefaction Curves {.smaller .columns-2}
+
+Which of the 50 1 ha plots is most diverse, once you control for the number of individuals?  
+
   <div class="notes">
  
   -
  
   </div>
-<!-- ---------------------------------------------------------------------------------- --> 
-## Comparing __Richness__ | Rarefaction Curves {.smaller}
-  Which of the 50 1 ha plots is most diverse, once you control for the number of individuals?  
+  
 ```{r,echo=FALSE}  
 inputPanel(
-  numericInput("nindiv", "How many individuals?", 50)
+  numericInput("nindiv", "How many individuals?", 50),
+  sliderInput("nplots5", label = "Select which plots to compare", min = 1, max = 50, value = c(1:16))
 )
 
 renderTable({
   rar <- rarefy(BCI, input$nindiv) #gives you the species per 20 individuals sampled for each of 50 ha
-  data.frame(N.individuals=apply(BCI,1,sum),N.species=apply(BCI,1,function(x) sum(x>0)),N.species.rarefied=round(rar,0))[1:16,]
+  data.frame(N.individuals=apply(BCI,1,sum),N.species=apply(BCI,1,function(x) sum(x>0)),N.species.rarefied=round(rar,0))[input$nplots5[1]:input$nplots5[2],]
 })
 ```
+ 
+<!-- ---------------------------------------------------------------------------------- --> 
+## Beyond Richness: Evenness {.smaller}
+
+Why do we need diversity indices?
+
+  - An alternative to rarefaction that accounts for differences is abundance between plots
+
+  - The number of individuals of each species are plotted in order of their relative abundance in the community (most abundant to least abundant).
+
+<IMG STYLE="position:absolute; TOP:350px; LEFT:240px; WIDTH:270px; HEIGHT:300px" SRC="Figures/RAD.png">
+
+  <div class="notes">
+  
+  - How to compare sites with different abundance patterns?
+    + At site 1, AA  BB CCC D 
+    + At site 2, AAA B  C   DDD
+  - These are generally called species abundance distributions
+  - This one happens to be shown as a __rank__ abundance distribution
+  - Samples or communities with a small number of species and with a few dominant species will show steep biodiversity curves
+  - Species samples, each with a similar abundances, will have shallow biodiversity curves
+ 
+  </div>
+
+<!-- ---------------------------------------------------------------------------------- --> 
+## Beyond Richness | Species abundance distributions 
+  
+  <IMG STYLE="position:absolute; TOP:200px; LEFT:80px; WIDTH:700px; HEIGHT:400px" SRC="Figures/RAD2.png">
+
+<!-- ---------------------------------------------------------------------------------- --> 
+## Beyond Richness | Species abundance distributions 
+
+The graph shows the relative abundance of species found in 4 sample communities. Which has the highest species richness?
+
+  <IMG STYLE="position:absolute; TOP:350px; LEFT:80px; WIDTH:500px; HEIGHT:300px" SRC="Figures/RAD_question.png">  
   
 <!-- ---------------------------------------------------------------------------------- --> 
 ## Beyond Richness | Species abundance distributions 
 
-```{r echo=FALSE}
-inputPanel(
-  helpText('Avoid selecting more than 8 plots at a time'),
-  sliderInput("nplots2", label = "Number of plots", min = 1, max = 50, value = c(11,18))
-)
+The graph shows the relative abundance of species found in 4 sample communities. Which has the highest overall biodiversity, when truncating samples at 12 species? 
 
-renderPlot({
-  par(mfrow=c(2,4),oma=c(7,0,0,0))
-  for(i in input$nplots2[1]:input$nplots2[2]){
-    rad <- rad.lognormal(BCI[i,])
-    plot(rad,bty='n',main=paste0('Plot ',i),las=1)
-  }
-})
-```
-  <div class="notes">
-    
-    - Ranked abundance distribution models. The best model has the lowest \textsc{aic}.
+  <IMG STYLE="position:absolute; TOP:350px; LEFT:80px; WIDTH:500px; HEIGHT:300px" SRC="Figures/RAD_question.png">  
   
-  </div>
-
-
-<!-- ---------------------------------------------------------------------------------- --> 
-## Beyond Richness | Why do we need diversity indices?
-An alternative to rarefaction that accounts for differences is abundance between plots
-
-How to compare sites with different abundance patterns?
-
-  - At site 1, AA  BB CCC D 
-  - At site 2, AAA B  C   DDD
-
   <div class="notes">
+  
+  - this highlights why rarefaction is important
   
   </div>  
-
-
   
 <!-- ---------------------------------------------------------------------------------- -->
-## Lots of metrics
+## Lots of metrics {.smaller}
+
+ - We need to summarize species-abundance plots to make comparisons easier
  - Why are there indices? Why isn't S all we need to know?
     + different sample sizes
     + account for variation in abundance
+    + weight abundance vs richness differently
     + weight rare or abundant species differently
 
-add picture
+<IMG STYLE="position:absolute; TOP:50px; LEFT:700px; WIDTH:100px; HEIGHT:110px" SRC="Figures/RAD.png">
 
+<IMG STYLE="position:absolute; TOP:370px; LEFT:100px; WIDTH:500px; HEIGHT:300px" SRC="Figures/Div_Indices.png">
+  
   <div class="notes">
-    - rare species more important for conservation
-    - abundant species more important for ecosystem function
-  </div>
-
-<!-- ---------------------------------------------------------------------------------- -->
-## Simpson's D
-<!-- $ D_S = 1/\sum{p_{i}^{2}} $  $ H = \sum_{i} p_i log p_i $
-\begin{equation}
-
-  $ D_1 = 1 - \sum_{i=1}^S p_i^2 $
-
-\end{equation}
--->
-$D_S=1/\sum{p_{i}^{2}}$
-
-
-  <div class="notes">
-    - slide bars of individual's abundance
-
+  
+  - rare species more important for conservation
+  - abundant species more important for ecosystem function
+  
   </div>
 
 <!-- ---------------------------------------------------------------------------------- -->
 ## Shannon's Entropy (H)
 
-$H=-\sum_{i=1}^S p_i \log_b  p_i$
+$H=-\sum_{i=1}^S p_i \log  p_i$
+
+- $S$ = total number of species
+- $p_i = \frac{n_i}{N}$
+  + $n_i$ = # individuals of species $i$
+  + $N$ = total # individuals in the sample
+- from information theory
+- measures the uncertainty in predicting the species identity of the next individual sampled
 
   <div class="notes">
   
+  - Assumes all individuals are randomly sampled
+  - Assumes Population is indefinitely large, or effectively infinite
+  - Assumes All species in the community are represented
+  - Flaws usually apparent due to undersampling
   - slide bars of individual's abundance
   - Have D and H both calculated
   - Try to find some wierd behavior where they do different things
 
   </div>
+  
+<!-- ---------------------------------------------------------------------------------- -->
+## Shannon's Entropy (H)
+```{r echo=FALSE}
+inputPanel(
+  helpText("If you select more than 8 plots at a time, you'll only see the last few"),
+  sliderInput("nplots21", label = "Number of plots", min = 1, max = 50, value = c(11,18))
+)
+
+renderPlot({
+  par(mfrow=c(2,4),oma=c(7,0,0,0))
+  for(i in input$nplots21[1]:input$nplots21[2]){
+    rad <- rad.lognormal(BCI[i,])
+    plot(rad,bty='n',main=paste0('Plot ',i),las=1,ylim=c(1,50),xlim=c(1,109))
+    legend('topright',bty='n',legend=paste0('H=',round(diversity(BCI[i,]),2),'\n 1/D=',round(diversity(BCI[i,], "inv"),2),'\nalpha=',round(fisher.alpha(BCI[i,]),2)))
+  }
+})
+
+
+```
+
+  <div class="notes">
+  
+  - 1/D = Inverse Simpson
+  - alpha = Fisher's alpha
+  - I show these two metrics of diversity to compare with H because they're common, even though we won't get to them today
+  
+  </div>
+  
+<!-- ---------------------------------------------------------------------------------- -->
+## Shannon's Entropy (H)
+
+$H=-\sum_{i=1}^S p_i \log  p_i$
+
+- H has a convenient partitioning of richness and evenness
+- Shannon's evenness comes from comparing $H$ to its maximum value $H_{max}$
+- $H_{max}$ = maximal diversity which could occur if all species collected were equally abundant = $log S$
+- $J = H/H_{max} = H/logS$ = Shannon Evenness
+  + $H<H_{max}$ so $0<J<1$
+
+  <div class="notes">
+  - All diversity indices are influenced by both richness and evenness; choices between them depend on how they weight each
+  - There are __many__ other diversity indices, each with different strenghts in terms of their dependence on richness, dominance, rarity, estimation, variance estimation
+  - Simpson's ($D_S=1/\sum{p_{i}^{2}}$) is about as common as Shannon's
+  - These just amount to a bunch of algebra, so you can look them up when you're bored...
+
+  </div>
 
 <!-- ---------------------------------------------------------------------------------- -->
-## Spatial scales of diversity {.smaller}
+## Shannon's Entropy (H) {.smaller}
 
-  > - $\alpha$ Diversity = diversity with a habitat unit. 
-    +     Site A = 7 species, Site B = 5 species, Site C = 7 species.
-  > - $\beta$ Diversity = diversity between habitats.
-    +     greatest $\beta$ Diversity between Site A and C with 10 species that differ and only 2 species in common.
-  > - $\gamma$ Diversity = landscape diversity 
-    +     $\gamma$ = 12 species total diversity.
+ Which attribute of the species abundance distribution is H least sensitive to?
+ 
+ What's evenness sensitive to?
+ 
+```{r echo=FALSE}
+inputPanel(
+   selectInput("y", label = "y variable",choices = c('Diversity (H)','Evenness (J)','Richness','Dominance','Rarity'), selected = 'Diversity (H)'), 
+   selectInput("x", label = "x variable",choices = c('Richness','Evenness (J)','Diversity (H)','Dominance','Rarity'), selected = 'Richness')
+)
+
+renderPlot({
+  par(oma=c(4,9,0,8))
+  if(input$x=='Richness') x=apply(BCI,1,function(x) sum(x>0))
+  if(input$x=='Evenness (J)') x=diversity(BCI)/log(apply(BCI,1,function(x) sum(x>0)))
+  if(input$x=='Dominance') x=apply(BCI,1,function(x) max(x)/sum(x))
+  if(input$x=='Rarity') x=apply(BCI,1,function(x) sum(x==1))
+  if(input$x=='Diversity (H)') x=diversity(BCI)
+
+  if(input$y=='Richness') y=apply(BCI,1,function(x) sum(x>0))
+  if(input$y=='Evenness (J)') y=diversity(BCI)/log(apply(BCI,1,function(x) sum(x>0)))
+  if(input$y=='Dominance') y=apply(BCI,1,function(x) max(x)/sum(x))
+  if(input$y=='Rarity') y=apply(BCI,1,function(x) sum(x==1))
+  if(input$y=='Diversity (H)') y=diversity(BCI)
+
+  plot(x,y,bty='n',ylab=input$y,xlab=input$x,las=1, bty='n',main="BCI plots")
+  abline(lm(y~x),col='red',lwd=2)
+})
+
+
+```
+
+ <div class="notes">
+ 
+ - Evenness measured by J (Shannon Evenness)
+ - Dominance =relative abundance of the most abundant species
+ - Rarity = # singletons
+ 
+ </div>
+<!-- ---------------------------------------------------------------------------------- -->
+## Spatial scales of diversity {.smaller}
+ 
+  - Point diversity = species richness found in a plot sample.
+      + Site A = 7 species
+ - $\alpha$ Diversity = species richness across a suite of samples in a homogeneous community or habitat, like a set of plots on RWU campus
+      + Site A = 7 species, Site B = 5 species, Site C = 7 species.
 
 <IMG STYLE="position:absolute; TOP:385px; LEFT:150px; WIDTH:600px; HEIGHT:300px" SRC="Figures/abg_diversity.png">
 
   <div class="notes">
-    - so far we've focused on taking samples (1 ha plots) and Estimating gamma diversity
-    - beta suggests that we need to look at differences between communities
+  
+  - so far we've focused on taking samples (1 ha plots) and Estimating gamma diversity
+  - beta suggests that we need to look at differences between communities
+  
+  </div>
+  
+<!-- ---------------------------------------------------------------------------------- -->
+## Spatial scales of diversity {.smaller}
+ 
+  - $\beta$ Diversity = species richness found in a landscape (across a suite of heterogeneous communities or habitats), like Bristol
+      + greatest $\beta$ Diversity between Site A and C with 10 species that differ and only 2 species in common.
+  - $\gamma$ Diversity = species richness found across a broad heterogeneous region, like New England
+      + $\gamma$ = 12 species total diversity.
+
+<IMG STYLE="position:absolute; TOP:385px; LEFT:150px; WIDTH:600px; HEIGHT:300px" SRC="Figures/abg_diversity.png">
+
+  <div class="notes">
+  
+    Whittaker (1960) divided diversity into various components. The best known are diversity in one spot that he called alpha diversity, and the diversity
+along gradients that he called beta diversity.The basic diversity indices are indices of alpha diversity.Beta diversity should be studied with respect
+to gradients (Whittaker, 1960), but almost everybody understand that as a measure of generalheterogeneity (Tuomisto, 2010a,b): how many more species do you have in a collection of sitescompared to an average site.
+
   </div>
 
 <!-- ---------------------------------------------------------------------------------- -->
 ## Beta Diversity
 
+  <IMG STYLE="position:absolute; TOP:150px; LEFT:80px; WIDTH:700px; HEIGHT:400px" SRC="Figures/Beta_div.png">  
+  
+<!--
 ```{r echo=FALSE} 
 beta <- vegdist(BCI, binary=TRUE)
 mean(beta)
@@ -590,17 +747,32 @@ mean(beta)
 betadiver(help=TRUE)
 z <- betadiver(BCI, "z")
 ```
+-->
 
   <div class="notes">
+  
+  -Jaccard’s (or Sorensen's) indices measure how similar samples of species are over increasing distances apart....  
+  -Slopes of the Jacccard (Sorensen) index of plot pairs versus distance apart, provides measure of Beta or Gamma diversity: turn-over in species with distance.    
 
-  Whittaker (1960) divided diversity into various components. The best known are diversity in one spot that he called alpha diversity, and the diversity
-along gradients that he called beta diversity.The basic diversity indices are indices of alpha diversity.Beta diversity should be studied with respect
-to gradients (Whittaker, 1960), but almost everybody understand that as a measure of generalheterogeneity (Tuomisto, 2010a,b): how many more species do you have in a collection of sitescompared to an average site.
-The best known index of beta
   </div>
  
 <!-- ---------------------------------------------------------------------------------- -->
-## Beta Diversity - Sorensen
+## Beta Diversity - Jaccard {.smaller}
+
+Jaccard’s index: 
+
+$\frac{number\, of\,  species\,  shared\,  between\,  2\,  samples}{(no.\, species\, sample\, 1\, +\, no.\, species\,sample\, 2\, - \,no.\, species\, shared}$
+
+Examples: 
+
+Sample 1     | Sample 2 | Jaccard   
+------------- | ------------- | ------------- 
+ABCDE       | ABCDE        | 5/(5+5-5) = 1    
+ABCDE       | ABDFG        | 3/(5+5-3) = 0.429    
+ABCDE       | AFGHI        | 1/(5+5-1) = 0.111     
+ABCDE       | FGHIJ        | 0/(5+5-0) = 0       
+
+The Jaccard index varies from 1 = identical composition to 0 = no species in common among plots. 
 
   <div class="notes">
   
@@ -617,30 +789,120 @@ The best known index of beta
 -->
 
 <!-- ---------------------------------------------------------------------------------- -->
-## Functional Diversity  
+## Beta Diversity | Intercontinental comparisons of species turnover  {.smaller}
+
+<IMG STYLE="position:absolute; TOP:170px; LEFT:50px; WIDTH:800px; HEIGHT:450px" SRC="Figures/global_beta.png">
 
   <div class="notes">
-    - attributes of each microbe
+  
+  - China has greater change in plant species composition with distance (i.e. species turnover) and thus biodiversity than does eastern North America
+
+  </div>  
+
+<!-- ---------------------------------------------------------------------------------- -->
+## Genetic Diversity | (allelic diversity) within species and populations is a key concern of conservation biologists   {.smaller}
+
+- Small populations are more likely than large ones to become extinct from unexpected events. 
+
+- Too narrow a genetic base (e.g. in cheetahs) limits the evolutionary adaptability of a population to challenges from the environment
+
+- In agriculture, the potential for improvement of crops, trees, and livestock depends in part on the availability of "gene resources"—the genetic diversity of wild relatives (e.g. corn, rice). 
+
+<IMG STYLE="position:absolute; TOP:500px; LEFT:150px; WIDTH:630px; HEIGHT:150px" SRC="Figures/genetic_div.png">
+
+  <div class="notes">
+  
+  - 
+
+  </div>  
+  
+
+<!-- ---------------------------------------------------------------------------------- -->
+## Functional Diversity {.smaller}
+variation in morphology, physiology, ecological niches, etc. among species in a community (or within an evolutionary lineage) 
+
+<IMG STYLE="position:absolute; TOP:220px; LEFT:150px; WIDTH:600px; HEIGHT:400px" SRC="Figures/Funct_div.png">
+
+  <div class="notes">
+  
+  - function usually characterized be species traits
 
   </div>  
   
 <!-- ---------------------------------------------------------------------------------- -->
-## Phylogenetic Diversity
+## Phylogenetic Diversity | The number of species distributed across evolutionary lineages {.smaller}
+
+Diversity is hierarchical: 5 species from 5 different families represent more genetic and phylogenetic diversity than 5 species from the same genus or the same family.
+
+<IMG STYLE="position:absolute; TOP:400px; LEFT:430px; WIDTH:300px; HEIGHT:250px" SRC="Figures/Phylo_div.png">
+
 
   <div class="notes">
-    - sequence each microbe
+  
+  - 
+  
   </div> 
 
 <!-- ---------------------------------------------------------------------------------- -->
+## Phylogenetic Diversity  {.smaller}
+
+<IMG STYLE="position:absolute; TOP:120px; LEFT:150px; WIDTH:700px; HEIGHT:500px" SRC="Figures/BIEN_Science.png">
+
+  <div class="notes">
+  
+  - plots show phylo diversity vs richness
+  - PDI measures the total branch length of co-occurring species
+  - note the negative relationship - more  phylogenetically diverse communities have lower richness
+  - high lattitudes= older species, tropics are more recent speciation (contrasting the hypothesis that long term stability led to more diversity in tropics)
+  
+  </div> 
+
+<!-- ---------------------------------------------------------------------------------- -->
+##  Recap: how to measure diversity?
+
+- What you want to know determines how you analyze your data
+- How important is each aspect of diversity?
+    + Richness? 
+    + Evenness? 
+    + Dominance?
+    + Abundance? 
+    + Per-species (relative) abundance?
+    + Genetic Diversity?
+    + Functional diversity?
+    + Phylogenetic Diversity
+
+<!-- ---------------------------------------------------------------------------------- -->
+## Some things that would've been nice to get to
+
+- uncertainty in diversity indices
+- detection probability
+
+  <div class="notes">
+  
+  - you're lucky I don't get to assign the homework...
+  
+  </div> 
+
+
+
+<!-- ---------------------------------------------------------------------------------- -->
 ## Recap
-  <!-- on something positive
+  <!--
    - importance of uncertainty - fueling more questions and refining them
-   - job security!
    - important to recognize what you don't know
    - 'To know that we know what we know, and that we do not know what we do not know, this is true knowledge.' (Henry David Thoreau, Walden, 1854)
  -->
  
+  1. Quantifying biodiversity is difficult 
+  2. Diversity = Richness & Evenness
+  3. Estimate unobserved species? 
+  4. How to compare diversity between communities
+  5. Species aren't the only units of diversity
+  
   <div class="notes">
+  
+  - There are many ways to measure diversity because they're all incomplete
+  - Different measures useful for different
   
   </div>  
 
