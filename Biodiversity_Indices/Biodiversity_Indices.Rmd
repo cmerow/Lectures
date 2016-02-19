@@ -26,7 +26,7 @@ data(BCI)
 
 ## This Presentation {.smaller}
 
-(very cool) interactive slides available at
+interactive slides available at
 
 [http://protea.eeb.uconn.edu:3838/cory/Biodiversity_Indices/](http://protea.eeb.uconn.edu:3838/cory/Biodiversity_Indices/) or 
 
@@ -35,14 +35,13 @@ data(BCI)
   - open in chrome, if you have it
   - p shows notes associated with each slide (on macs)
 
-(moderately cool) static slides available from your course website
-
  <div class="notes">
  
   - These will help both of us remember what I meant to say on each slide
   - o gives overview of slides (on macs, sometimes on PCs)
   - w allows widescreen
   - f allows fullscreen
+  - if you see code at the top of your window, just reload the page (Command+R on Macs)
   
  </div>
 
@@ -133,7 +132,8 @@ The sum total of taxonomic, genetic, functional, phylogenetic, and ecological di
 > 5. Species aren't the only units of diversity
 
  <div class="notes">
- 
+ - all models are wrong, some are useful
+ - the nature of biodiversity measurement is that there are __loads__ of metrics for a range of comparisons. I'm going to show you 1 example of each common comparision. If you're in a position to conduct a biodiversity assessment, then it's time to look up the pros and cons of different metrics for a particular task.
  
  </div>
 <!-- ---------------------------------------------------------------------------------- -->
@@ -156,10 +156,11 @@ The sum total of taxonomic, genetic, functional, phylogenetic, and ecological di
   - variety of genetic material useful in long term survival and stability
   - The community benefits from a mixture of plants:
     + soils improve with nitrogen fixers, deep rooted plants bring nutrients up from soil layers 
-    + some species work together (called commensalism) 
+    + some species work together (mutualism, commensalism) 
   - Healthy diverse plant communities generally have all niches filled and are theoretically less likely to be invaded
 
   </div>
+  
 <!-- ---------------------------------------------------------------------------------- -->
 ## Diversity = Richness & Evenness {.smaller}
 
@@ -172,17 +173,17 @@ Richness
 Evenness 
  
   > -  = how __different abundances__ are among species
-  > -  measured with a large variety of indices (Shannon, Simpson, etc.)
   > -  maximum evenness = all species have the same # individuals
   > -  minimum evenness = all individuals are the same species
   > -  1000 elephants and 1 lion is less diverse than
   > -  500 elephants and 500 lions
+  > -  measured with a large variety of indices (Shannon, Simpson, $\alpha$, etc.)
 
   <div class="notes">
   
   - Richness: numbers of species (or other fundamental units) present in a particular area.
   - Biodiversity indices: relative proportional  representation of species (or other fundamental units of biodiversity) in a particular area or sample. 
-  - the nature of biodiversity measurement is that there are __loads__ of metrics for a range of comparisons. I'm going to show you 1 example of each common comparision. If you're in a position to conduct a biodiversity assessment, then it's time to look up the pros and cons of different metrics for a particular task.
+ 
   </div>
 
 <!-- ---------------------------------------------------------------------------------- -->
@@ -209,9 +210,11 @@ head(BCI,5)[,1:6]
 Definition of sampling: some members of a population are selected as representatives of the entire population
 
   > - define a community (location in space/time that's reasonably closed)
+  > - reasonably homogeneous habitat
   > - best to observed individuals
-  > - can count species (not covered today)
-  > - empirical sample 
+  > - can count species (not covered today) but you miss evenness
+  > - replication gives insight into how well our sample represents the population  
+
 
 <!--
 <IMG STYLE="position:absolute; TOP:400px; LEFT:350px; WIDTH:350px; HEIGHT:240px" SRC="Figures/Sampling.png">
@@ -220,7 +223,6 @@ Definition of sampling: some members of a population are selected as representat
   <div class="notes">
   
   - Because we have often have a sample (not the entire population) we need to use stats to infer things about the population
-  - replication gives insight into how well our sample represents the population  
   - Why do we use samples ?
     + Get information from large populations minimal cost/ maximum speed
     + better to have lots of small plots than 1 big plot to achieve replication
@@ -233,7 +235,7 @@ Definition of sampling: some members of a population are selected as representat
   
 ```{r echo = FALSE}
 inputPanel(
-  sliderInput("nreps2", label = "Number of replicate samples", min = 2, max = 30, value = 3)
+  sliderInput("nreps2", label = "Number of replicate samples", min = 1, max = 30, value = 1)
 )
 ```
 
@@ -248,7 +250,7 @@ renderPlot({
 ```
 
   <div class="notes">
-  - increaseing the number of replicates shows how each is unique, but a pattern emerges
+  - increasing the number of replicates shows how each is unique, but a pattern emerges
   - the number of species asymptotes as we add more sampling plots, suggesting that we're getting close to the total number of species
   - 'species accumulation curve'
   
@@ -330,13 +332,11 @@ $Chao_1 S_P = S_0 + \frac{a_1^2}{2*a_2} * (N-1)/N$
 - $N$ = total individuals
 
   <div class="notes">
-  
+  - How would you know if the Chao (or any other) estimator were doing a good job?
   - Species accumulation models indicate that not all species were seen in any site. These unseen species also belong to the species pool.
-  
-  - non parametric because they don't depend on partucular species abundance distribution (defined in a few slides)
-  
+  - non parametric because they don't depend on particular species abundance distribution (defined in a few slides)
   - For $Chao_1$ no further changes after there are 2 of each species
-  Pros and cons
+  - I don't know why this works tolerably well - statistical mechanics?
   
   </div>
   
@@ -379,7 +379,7 @@ renderPlot({
 - Predict Range 
 - Stack Ranges
 
-<IMG STYLE="position:absolute; TOP:300px; LEFT:350px; WIDTH:600px; HEIGHT:360px" SRC="Figures/SDM_workflow.png">
+<IMG STYLE="position:absolute; TOP:300px; LEFT:300px; WIDTH:600px; HEIGHT:360px" SRC="Figures/SDM_workflow.png">
 
   <div class="notes">
   
@@ -452,15 +452,18 @@ renderPlot({
 
 <!-- ---------------------------------------------------------------------------------- --> 
 ## Comparing __Richness__ | Rarefaction Curves {.smaller}
-  - Species accumulation curves can estimate richness from samples from 1 community
+  
+  - Where should we put the reserve? 
+  - Which habitat is more fragile?
   - Rarefaction curves compare samples of __different__ communities
   - Samples usually have different numbers of __individuals__
+    + different: sampling effort, detection probability, observer
     + plot 1 has 50 species and 700 individuals
     + plot 2 has 30 species and 300 indiviudals
   - Species richness increases with sample size, and differences in richness actually may be caused by differences in sample size.
   
   <div class="notes">
-  
+  - The pecies accumulation curves we were just talking about (but based on individuals rather than sites) can estimate richness from samples from 1 community
   - we're going to pretend that each of the 50 1 ha plots represents a different community (on the previous slide, we assumed they were replicates from the same community).   
   
   - Some BCI sites are younger than others and have more individuals than others, making samples difficult to compare. Hence we need to rarefy the samples (if we assume they might represent different communities).
@@ -470,7 +473,7 @@ renderPlot({
   </div>
 
 <!-- ---------------------------------------------------------------------------------- --> 
-## Comparing __Richness__ | Rarefaction Curves {.smaller}
+## Comparing __Richness__ {.smaller}
 
 This is very similar to the species accumulation curve above, but the x-axis is now __individuals__
 
@@ -478,8 +481,8 @@ Which of the 50 1 ha plots is most diverse, once you control for the number of i
 
 
   <div class="notes">
- 
-  -
+  - The next slide has the same info in a table, if that's easier to view
+  - Notice that the rankings don't change; while the exact number might be wrong, the rankings are useful.
  
   </div>
   
@@ -563,7 +566,7 @@ The graph shows the relative abundance of species found in 4 sample communities.
   
   <div class="notes">
   
-  - this highlights why rarefaction is important
+  - richness and evenness tell different stories about which community is more diverse
   
   </div>  
   
@@ -593,22 +596,19 @@ The graph shows the relative abundance of species found in 4 sample communities.
 
 $H=-\sum_{i=1}^S p_i \log  p_i$
 
+- from information theory
+- measures the uncertainty in predicting the species identity of the next individual sampled
 - $S$ = total number of species
 - $p_i = \frac{n_i}{N}$
   + $n_i$ = # individuals of species $i$
   + $N$ = total # individuals in the sample
-- from information theory
-- measures the uncertainty in predicting the species identity of the next individual sampled
 
   <div class="notes">
   
   - Assumes all individuals are randomly sampled
-  - Assumes Population is indefinitely large, or effectively infinite
-  - Assumes All species in the community are represented
+  - Assumes population is indefinitely large, or effectively infinite
+  - Assumes all species in the community are represented
   - Flaws usually apparent due to undersampling
-  - slide bars of individual's abundance
-  - Have D and H both calculated
-  - Try to find some wierd behavior where they do different things
 
   </div>
   
@@ -703,9 +703,7 @@ renderPlot({
 <!-- ---------------------------------------------------------------------------------- -->
 ## Spatial scales of diversity {.smaller}
  
-  - Point diversity = species richness found in a plot sample.
-      + Site A = 7 species
- - $\alpha$ Diversity = species richness across a suite of samples in a homogeneous community or habitat, like a set of plots on RWU campus
+  - $\alpha$ Diversity = species richness across a suite of samples in a homogeneous community or habitat, like a set of plots on RWU campus
       + Site A = 7 species, Site B = 5 species, Site C = 7 species.
 
 <IMG STYLE="position:absolute; TOP:385px; LEFT:150px; WIDTH:600px; HEIGHT:300px" SRC="Figures/abg_diversity.png">
@@ -729,9 +727,7 @@ renderPlot({
 
   <div class="notes">
   
-    Whittaker (1960) divided diversity into various components. The best known are diversity in one spot that he called alpha diversity, and the diversity
-along gradients that he called beta diversity.The basic diversity indices are indices of alpha diversity.Beta diversity should be studied with respect
-to gradients (Whittaker, 1960), but almost everybody understand that as a measure of generalheterogeneity (Tuomisto, 2010a,b): how many more species do you have in a collection of sitescompared to an average site.
+  Whittaker (1960) divided diversity into various components. The best known are diversity in one spot that he called alpha diversity, and the diversity along gradients that he called beta diversity.The basic diversity indices are indices of alpha diversity.Beta diversity should be studied with respect to gradients (Whittaker, 1960), but almost everybody understand that as a measure of generalheterogeneity (Tuomisto, 2010a,b): how many more species do you have in a collection of sitescompared to an average site.
 
   </div>
 
@@ -751,7 +747,7 @@ z <- betadiver(BCI, "z")
 -->
 
   <div class="notes">
-  
+  - If you're building multiple reserves, you may not want to put them right next to one another, because you might be conserving the same species in each; further apart might help more species
   -Jaccard’s (or Sorensen's) indices measure how similar samples of species are over increasing distances apart....  
   -Slopes of the Jacccard (Sorensen) index of plot pairs versus distance apart, provides measure of Beta or Gamma diversity: turn-over in species with distance.    
 
@@ -874,16 +870,12 @@ Diversity is hierarchical: 5 species from 5 different families represent more ge
 
 
   <div class="notes">
+ 
   - Appropriateness of each index for your data
   - Discriminant ability of the index
   - Statistical Comparability
   - Widespread utility of the index
-  - Your Question
-    + ecosystem function is better described by dominant species or functional diversity
-    + conservation might focus on rarity, richness
-    + managing a population might focus on genetic diversity and abundance
-    + natural resources might focus on phylogentic diversity or dominance
-    
+  
   </div> 
 <!-- ---------------------------------------------------------------------------------- -->
 ## Some examples of choosing an index
@@ -900,9 +892,16 @@ Diversity is hierarchical: 5 species from 5 different families represent more ge
   </div> 
 <!-- ---------------------------------------------------------------------------------- -->
 ## Some things that would've been nice to get to
+Critical
 
 - uncertainty in diversity indices
 - detection probability
+- survey design
+
+Historical
+
+- Species-Area relationships
+- More Species Abundance distributions
 
 
   <div class="notes">
