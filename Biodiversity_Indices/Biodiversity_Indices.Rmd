@@ -30,7 +30,7 @@ interactive slides available at
 
 [http://protea.eeb.uconn.edu:3838/cory/Biodiversity_Indices/](http://protea.eeb.uconn.edu:3838/cory/Biodiversity_Indices/) or 
 
-[cmerow.shinyapps.io/Biodiversity](https://cmerow.shinyapps.io/Biodiversity)
+[cmerow.shinyapps.io/Biodiversity_Indices](https://cmerow.shinyapps.io/Biodiversity_Indices)
 
   - open in chrome, if you have it
   - p shows notes associated with each slide (on macs)
